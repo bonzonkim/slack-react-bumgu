@@ -7,7 +7,7 @@ import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } fro
 import { Link, Redirect } from 'react-router-dom';
 
 const SignUp = () => {
-  const { data, error, revalidate } = useSWR('/api/users', fetcher);
+  const { data: userData } = useSWR('/api/users', fetcher);
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -60,11 +60,11 @@ const SignUp = () => {
     [email, nickname, password, passwordCheck, mismatchError],
   );
 
-  if (data === undefined) {
+  if (userData === undefined) {
     return <div>로딩중...</div>;
   }
 
-  if (data) {
+  if (userData) {
     return <Redirect to="/workspace/sleact/channel/일반" />;
   }
 

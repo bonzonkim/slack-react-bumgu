@@ -7,7 +7,7 @@ import { Link, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 
 const LogIn = () => {
-  const { data, error, revalidate, mutate } = useSWR('/api/users', fetcher);
+  const { data: userData, error, mutate } = useSWR('/api/users', fetcher);
 
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
@@ -25,20 +25,21 @@ const LogIn = () => {
           },
         )
         .then((response) => {
-          revalidate();
+          mutate();
         })
         .catch((error) => {
+          console.dir(error);
           setLogInError(error.response?.status === 401);
         });
     },
     [email, password],
   );
 
-  if (data === undefined) {
+  if (userData === undefined) {
     return <div>로딩중...</div>;
   }
 
-  if (data) {
+  if (userData) {
     return <Redirect to="/workspace/sleact/channel/일반" />;
   }
 
